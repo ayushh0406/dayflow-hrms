@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a React + TypeScript + Vite frontend application following a modular architecture pattern.
+This is a React + TypeScript + Vite frontend application following a modular architecture pattern with feature-based organization for scalability and maintainability.
 
 ## Code Organization Principles
 
@@ -10,24 +10,24 @@ This is a React + TypeScript + Vite frontend application following a modular arc
 
 ```
 src/
-├── components/       # Reusable UI components
-│   ├── common/      # Generic, reusable components (Button, Input, Modal, etc.)
-│   └── layout/      # Layout components (Header, Footer, Sidebar, etc.)
-├── features/        # Feature-based modules
+├── features/            # Feature modules (components + hooks + services + types)
 │   └── [feature-name]/
-│       ├── components/   # Feature-specific components
-│       ├── hooks/        # Feature-specific hooks
-│       ├── services/     # Feature-specific API calls
-│       ├── types/        # Feature-specific types
-│       └── index.ts      # Public API exports
-├── hooks/           # Shared custom React hooks
-├── services/        # API services and external integrations
-├── store/           # State management (Redux/Zustand/Context)
-├── types/           # Shared TypeScript types and interfaces
-├── utils/           # Utility functions and helpers
-├── constants/       # Application constants and configurations
-├── styles/          # Global styles and theme configurations
-└── assets/          # Static assets (images, fonts, icons)
+│       ├── components/  # Feature-specific components
+│       ├── hooks/       # Feature-specific hooks
+│       ├── services.ts  # API calls
+│       ├── types.ts     # TypeScript types
+│       └── index.ts     # Public API exports
+├── components/          # Reusable UI components
+│   ├── ui/             # Button, Input, Modal, Card, Table, etc.
+│   └── layout/         # Header, Sidebar, MainLayout, AuthLayout
+├── pages/              # Route pages (one per route)
+├── lib/                # Core configs (api, router, store, query)
+├── hooks/              # Shared custom React hooks
+├── utils/              # Utilities (validation, format, helpers, errors)
+├── types/              # Shared types (models, api, enums)
+├── constants/          # App constants (API, routes, roles, status)
+├── styles/             # Global styles & theme
+└── assets/             # Static files (images, icons, fonts)
 ```
 
 ### 2. Component Guidelines
@@ -175,17 +175,14 @@ For complex features, use feature folders:
 
 ```
 features/
-└── authentication/
+└── auth/
     ├── components/
-    │   ├── LoginForm.tsx
-    │   └── RegisterForm.tsx
+    │   ├── SignInForm.tsx
+    │   └── SignUpForm.tsx
     ├── hooks/
-    │   ├── useAuth.ts
-    │   └── useLogin.ts
-    ├── services/
-    │   └── authService.ts
-    ├── types/
-    │   └── auth.types.ts
+    │   └── useAuth.ts
+    ├── services.ts
+    ├── types.ts
     └── index.ts (exports public API)
 ```
 
