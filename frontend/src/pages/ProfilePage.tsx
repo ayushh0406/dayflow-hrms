@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
+import { employeeService, type Employee } from '@/features/employees/services';
 import styles from './ProfilePage.module.css';
 
 interface SkillItem {
@@ -19,6 +20,9 @@ interface CertificationItem {
 export const ProfilePage: FC = () => {
   const [activeTab, setActiveTab] = useState<'resume' | 'private' | 'salary' | 'security'>('resume');
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [skills, setSkills] = useState<SkillItem[]>([
     { id: '1', name: 'JavaScript' },
     { id: '2', name: 'React' },
@@ -29,18 +33,60 @@ export const ProfilePage: FC = () => {
   ]);
 
   const [profileData, setProfileData] = useState({
-    name: 'My Name',
-    loginId: 'OIJO20220001',
-    email: 'john.doe@company.com',
-    mobile: '+1 234 567 8900',
-    company: 'Company Name',
-    department: 'Engineering',
-    manager: 'Manager Name',
-    location: 'New York, NY',
-    about: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    jobLove: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    interests: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`
+    name: '',
+    loginId: '',
+    email: '',
+    mobile: '',
+    company: 'Dayflow', // Default or fetch from somewhere
+    department: '',
+    manager: 'N/A',
+    location: '',
+    designation: '',
+    joiningDate: '',
+    about: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+    jobLove: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+    interests: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setIsLoading(true);
+        const searchParams = new URLSearchParams(window.location.search);
+        const employeeId = searchParams.get('id');
+
+        let response;
+        if (employeeId) {
+          response = await employeeService.getById(employeeId);
+        } else {
+          response = await employeeService.getMe();
+        }
+
+        if (response.success && response.data) {
+          const emp = response.data;
+          setProfileData(prev => ({
+            ...prev,
+            name: `${emp.firstName} ${emp.lastName}`,
+            loginId: emp.employeeId,
+            email: emp.email,
+            mobile: emp.phoneNumber || '',
+            department: emp.department,
+            designation: emp.designation,
+            location: [emp.city, emp.state, emp.zipCode].filter(Boolean).join(', ') || emp.address || '',
+            joiningDate: new Date(emp.joiningDate).toLocaleDateString(),
+          }));
+        } else {
+          setError(response.message || 'Failed to fetch profile');
+        }
+      } catch (err: any) {
+        setError(err.message || 'An error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleInputChange = (field: string, value: string) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
@@ -98,14 +144,14 @@ export const ProfilePage: FC = () => {
               </Button>
             </>
           ) : (
-            <Button 
-              variant="primary" 
+            <Button
+              variant="primary"
               onClick={() => setIsEditing(true)}
               className={styles.editButton}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
               </svg>
               Edit Profile
             </Button>
@@ -123,15 +169,15 @@ export const ProfilePage: FC = () => {
                 <div className={styles.avatarContainer}>
                   <div className={styles.avatar}>
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M17 14v6m-3-3h6M6 10h2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2Z"/>
-                      <path d="M14 11V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>
+                      <path d="M17 14v6m-3-3h6M6 10h2a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2Z" />
+                      <path d="M14 11V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
                     </svg>
                   </div>
                   {isEditing && (
                     <button className={styles.editAvatarButton}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                       </svg>
                     </button>
                   )}
@@ -257,25 +303,25 @@ export const ProfilePage: FC = () => {
         {/* Centered Tabs */}
         <div className={styles.tabsContainer}>
           <div className={styles.tabs}>
-            <button 
+            <button
               className={`${styles.tab} ${activeTab === 'resume' ? styles.activeTab : ''}`}
               onClick={() => setActiveTab('resume')}
             >
               Resume
             </button>
-            <button 
+            <button
               className={`${styles.tab} ${activeTab === 'private' ? styles.activeTab : ''}`}
               onClick={() => setActiveTab('private')}
             >
               Private Info
             </button>
-            <button 
+            <button
               className={`${styles.tab} ${activeTab === 'salary' ? styles.activeTab : ''}`}
               onClick={() => setActiveTab('salary')}
             >
               Salary Info
             </button>
-            <button 
+            <button
               className={`${styles.tab} ${activeTab === 'security' ? styles.activeTab : ''}`}
               onClick={() => setActiveTab('security')}
             >
@@ -608,7 +654,7 @@ export const ProfilePage: FC = () => {
             {/* Salary Components */}
             <div className={styles.section}>
               <h3>Salary Components</h3>
-              
+
               <div className={styles.salaryComponentsList}>
                 <div className={styles.salaryComponent}>
                   <div className={styles.componentInfo}>
@@ -689,7 +735,7 @@ export const ProfilePage: FC = () => {
               {/* Provident Fund */}
               <div className={styles.section}>
                 <h3>Provident Fund (PF) Contribution</h3>
-                
+
                 <div className={styles.pfSection}>
                   <div className={styles.pfItem}>
                     <span className={styles.pfLabel}>Employee</span>
@@ -716,7 +762,7 @@ export const ProfilePage: FC = () => {
               {/* Tax Deductions */}
               <div className={styles.section}>
                 <h3>Tax Deductions</h3>
-                
+
                 <div className={styles.taxItem}>
                   <span className={styles.taxLabel}>Professional Tax</span>
                   <p className={styles.taxDesc}>Professional Tax deducted from the Gross salary</p>

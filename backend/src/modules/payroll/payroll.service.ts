@@ -74,9 +74,24 @@ export class PayrollService {
     }
 
     // Get all payroll records (Admin/HR)
-    async getAllPayroll() {
+    async getAllPayroll(requestingUserId: string) {
         try {
+            // Get requesting user's company
+            const requestingEmployee = await prisma.employee.findFirst({
+                where: { userId: requestingUserId },
+                select: { companyId: true }
+            });
+
+            if (!requestingEmployee) {
+                throw new AppError('Employee profile not found', 404);
+            }
+
             const payrolls = await prisma.payroll.findMany({
+                where: {
+                    employee: {
+                        companyId: requestingEmployee.companyId
+                    }
+                },
                 include: {
                     employee: {
                         select: {
@@ -96,6 +111,7 @@ export class PayrollService {
 
             return payrolls;
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError('Failed to fetch payroll records', 500);
         }
     }

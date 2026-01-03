@@ -4,6 +4,8 @@ import prisma from '../../shared/config/database';
 import config from '../../shared/config';
 import { AppError } from '../../shared/middlewares';
 import { SignUpDto, SignInDto, AuthResponse, JwtPayload } from './auth.types';
+import emailService from '../../shared/services/email.service';
+import companyService from '../company/company.service';
 
 export class AuthService {
     private readonly SALT_ROUNDS = 10;
@@ -41,11 +43,16 @@ export class AuthService {
         }
     }
 
-    // Sign Up
+    // Sign Up (First user of each company becomes Admin)
     async signUp(data: SignUpDto): Promise<AuthResponse> {
         try {
             // Validate password
             this.validatePassword(data.password);
+
+            // Company name is required for signup
+            if (!data.companyName) {
+                throw new AppError('Company name is required for signup', 400);
+            }
 
             // Check if user already exists
             const existingUser = await prisma.user.findFirst({
@@ -61,23 +68,56 @@ export class AuthService {
                 throw new AppError('User with this email or employee ID already exists', 400);
             }
 
+            // Check if company exists
+            let company = await companyService.getCompanyByName(data.companyName);
+
+            let userRole: 'ADMIN' | 'HR' | 'EMPLOYEE' = 'EMPLOYEE';
+
+            // If company doesn't exist, create it and make this user ADMIN
+            if (!company) {
+                company = await companyService.createCompany({
+                    name: data.companyName,
+                    logo: data.companyLogo || undefined,
+                });
+                userRole = 'ADMIN'; // First user of the company becomes ADMIN
+            } else {
+                // Company exists, check if there are any admins for this company
+                const adminCount = await prisma.user.count({
+                    where: {
+                        role: 'ADMIN',
+                        employee: {
+                            companyId: company.id
+                        }
+                    }
+                });
+
+                // If no admin exists for this company, make this user ADMIN
+                if (adminCount === 0) {
+                    userRole = 'ADMIN';
+                } else {
+                    // Company already has an admin, regular signup is disabled
+                    throw new AppError('Public signup is disabled for this company. Please contact your Admin/HR to create your account.', 403);
+                }
+            }
+
             // Hash password
             const hashedPassword = await this.hashPassword(data.password);
 
             // Create user and employee profile in a transaction
-            const result = await prisma.$transaction(async (tx) => {
+            const result = await prisma.$transaction(async (tx: any) => {
                 const user = await tx.user.create({
                     data: {
                         employeeId: data.employeeId,
                         email: data.email,
                         password: hashedPassword,
-                        role: data.role || 'EMPLOYEE',
+                        role: userRole,
                     },
                 });
 
                 const employee = await tx.employee.create({
                     data: {
                         userId: user.id,
+                        companyId: company.id,
                         firstName: data.firstName,
                         lastName: data.lastName,
                     },
@@ -94,6 +134,10 @@ export class AuthService {
                 role: result.user.role,
             });
 
+            // Send welcome email
+            const employeeName = `${data.firstName} ${data.lastName}`;
+            await emailService.sendWelcomeEmail(employeeName, data.email, data.employeeId);
+
             return {
                 user: {
                     id: result.user.id,
@@ -109,16 +153,21 @@ export class AuthService {
         }
     }
 
-    // Sign In
+    // Sign In (supports email OR employeeId)
     async signIn(data: SignInDto): Promise<AuthResponse> {
         try {
-            // Find user
-            const user = await prisma.user.findUnique({
-                where: { email: data.email },
+            // Find user by email OR employeeId
+            const user = await prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { email: data.email },
+                        { employeeId: data.email } // Allow login with employeeId in email field
+                    ]
+                },
             });
 
             if (!user) {
-                throw new AppError('Invalid email or password', 401);
+                throw new AppError('Invalid credentials', 401);
             }
 
             // Check if user is active
@@ -130,7 +179,7 @@ export class AuthService {
             const isPasswordValid = await this.verifyPassword(data.password, user.password);
 
             if (!isPasswordValid) {
-                throw new AppError('Invalid email or password', 401);
+                throw new AppError('Invalid credentials', 401);
             }
 
             // Generate token

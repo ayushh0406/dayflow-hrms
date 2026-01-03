@@ -7,6 +7,8 @@ export interface SignUpDto {
     role?: Role;
     firstName: string;
     lastName: string;
+    companyName?: string;
+    companyLogo?: string;
 }
 
 export interface SignInDto {

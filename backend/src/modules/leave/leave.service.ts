@@ -2,8 +2,16 @@ import prisma from '../../shared/config/database';
 import { AppError } from '../../shared/middlewares';
 import { LeaveStatus, AttendanceStatus } from '@prisma/client';
 import { CreateLeaveDto, UpdateLeaveDto, ApproveRejectLeaveDto, LeaveQueryDto } from './leave.types';
+import emailService from '../../shared/services/email.service';
+import { NotificationService } from '../notifications/notifications.service';
 
 export class LeaveService {
+    private notificationService: NotificationService;
+
+    constructor() {
+        this.notificationService = new NotificationService();
+    }
+
     // Calculate total days between dates (excluding weekends)
     private calculateTotalDays(startDate: Date, endDate: Date): number {
         let count = 0;
@@ -101,12 +109,37 @@ export class LeaveService {
                             user: {
                                 select: {
                                     employeeId: true,
+                                    email: true,
                                 },
                             },
                         },
                     },
                 },
             });
+
+            // Notify HR/Admin of new leave request (same company only)
+            const hrUsers = await prisma.user.findMany({
+                where: {
+                    role: { in: ['ADMIN', 'HR'] },
+                    isActive: true,
+                    employee: {
+                        companyId: employee.companyId
+                    }
+                },
+                select: { id: true },
+            });
+
+            if (hrUsers.length > 0) {
+                const hrUserIds = hrUsers.map((u: any) => u.id);
+                const employeeName = `${employee.firstName} ${employee.lastName}`;
+                await this.notificationService.notifyNewLeaveRequest(
+                    hrUserIds,
+                    employeeName,
+                    data.leaveType,
+                    startDate,
+                    endDate
+                );
+            }
 
             return leave;
         } catch (error) {
@@ -118,7 +151,21 @@ export class LeaveService {
     // Get leave requests
     async getLeaves(query: LeaveQueryDto, requestingUserId: string, requestingUserRole: string) {
         try {
-            const where: any = {};
+            // Get requesting user's company
+            const requestingEmployee = await prisma.employee.findFirst({
+                where: { userId: requestingUserId },
+                select: { id: true, companyId: true }
+            });
+
+            if (!requestingEmployee) {
+                throw new AppError('Employee profile not found', 404);
+            }
+
+            const where: any = {
+                employee: {
+                    companyId: requestingEmployee.companyId  // Filter by company
+                }
+            };
 
             if (query.employeeId) {
                 where.employeeId = query.employeeId;
@@ -144,15 +191,7 @@ export class LeaveService {
 
             // Employees can only see their own leaves
             if (requestingUserRole === 'EMPLOYEE') {
-                const employee = await prisma.employee.findUnique({
-                    where: { userId: requestingUserId },
-                });
-
-                if (!employee) {
-                    throw new AppError('Employee profile not found', 404);
-                }
-
-                where.employeeId = employee.id;
+                where.employeeId = requestingEmployee.id;
             }
 
             const leaves = await prisma.leave.findMany({
@@ -266,6 +305,20 @@ export class LeaveService {
         try {
             const leave = await prisma.leave.findUnique({
                 where: { id },
+                include: {
+                    employee: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            userId: true,
+                            user: {
+                                select: {
+                                    email: true,
+                                },
+                            },
+                        },
+                    },
+                },
             });
 
             if (!leave) {
@@ -287,8 +340,12 @@ export class LeaveService {
                 },
             });
 
-            // If approved, mark attendance as LEAVE for the period
+            const employeeName = `${leave.employee.firstName} ${leave.employee.lastName}`;
+            const employeeEmail = leave.employee.user.email;
+
+            // Send notifications and emails based on status
             if (data.status === 'APPROVED') {
+                // Mark attendance as LEAVE for the period
                 const dates = [];
                 const current = new Date(leave.startDate);
                 const end = new Date(leave.endDate);
@@ -323,6 +380,40 @@ export class LeaveService {
                         },
                     });
                 }
+
+                // Send approval notification and email
+                await this.notificationService.notifyLeaveApproval(
+                    leave.employee.userId,
+                    leave.leaveType,
+                    leave.startDate,
+                    leave.endDate
+                );
+
+                await emailService.sendLeaveApprovalEmail(
+                    employeeName,
+                    employeeEmail,
+                    leave.leaveType,
+                    leave.startDate,
+                    leave.endDate
+                );
+            } else if (data.status === 'REJECTED') {
+                // Send rejection notification and email
+                await this.notificationService.notifyLeaveRejection(
+                    leave.employee.userId,
+                    leave.leaveType,
+                    leave.startDate,
+                    leave.endDate,
+                    data.rejectionReason
+                );
+
+                await emailService.sendLeaveRejectionEmail(
+                    employeeName,
+                    employeeEmail,
+                    leave.leaveType,
+                    leave.startDate,
+                    leave.endDate,
+                    data.rejectionReason
+                );
             }
 
             return updated;

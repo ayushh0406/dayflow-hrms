@@ -139,8 +139,22 @@ export class AttendanceService {
     // Get attendance records
     async getAttendance(query: AttendanceQueryDto, requestingUserId: string, requestingUserRole: string) {
         try {
+            // Get requesting user's company
+            const requestingEmployee = await prisma.employee.findFirst({
+                where: { userId: requestingUserId },
+                select: { id: true, companyId: true }
+            });
+
+            if (!requestingEmployee) {
+                throw new AppError('Employee profile not found', 404);
+            }
+
             // Build where clause
-            const where: any = {};
+            const where: any = {
+                employee: {
+                    companyId: requestingEmployee.companyId  // Filter by company
+                }
+            };
 
             if (query.employeeId) {
                 where.employeeId = query.employeeId;
@@ -162,15 +176,7 @@ export class AttendanceService {
 
             // If employee, only show their own attendance
             if (requestingUserRole === 'EMPLOYEE') {
-                const employee = await prisma.employee.findUnique({
-                    where: { userId: requestingUserId },
-                });
-
-                if (!employee) {
-                    throw new AppError('Employee profile not found', 404);
-                }
-
-                where.employeeId = employee.id;
+                where.employeeId = requestingEmployee.id;
             }
 
             const attendance = await prisma.attendance.findMany({
@@ -282,11 +288,11 @@ export class AttendanceService {
 
             const summary = {
                 totalDays: attendance.length,
-                present: attendance.filter(a => a.status === AttendanceStatus.PRESENT).length,
-                absent: attendance.filter(a => a.status === AttendanceStatus.ABSENT).length,
-                halfDay: attendance.filter(a => a.status === AttendanceStatus.HALF_DAY).length,
-                leave: attendance.filter(a => a.status === AttendanceStatus.LEAVE).length,
-                totalWorkHours: attendance.reduce((sum, a) => sum + (a.workHours || 0), 0),
+                present: attendance.filter((a: any) => a.status === AttendanceStatus.PRESENT).length,
+                absent: attendance.filter((a: any) => a.status === AttendanceStatus.ABSENT).length,
+                halfDay: attendance.filter((a: any) => a.status === AttendanceStatus.HALF_DAY).length,
+                leave: attendance.filter((a: any) => a.status === AttendanceStatus.LEAVE).length,
+                totalWorkHours: attendance.reduce((sum: number, a: any) => sum + (a.workHours || 0), 0),
             };
 
             return summary;

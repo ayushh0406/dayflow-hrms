@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { FC } from 'react';
 import { Input } from '@/components/common/Input';
 import { Button } from '@/components/common/Button';
+import { authService } from '@/features/auth/services';
 import styles from './AuthPages.module.css';
 
 export const SignUpPage: FC = () => {
@@ -13,7 +14,8 @@ export const SignUpPage: FC = () => {
     password: '',
     confirmPassword: '',
   });
-  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,8 +27,30 @@ export const SignUpPage: FC = () => {
     }
   };
 
-  const handleLogoSelect = (file: File) => {
-    setCompanyLogo(file);
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setErrors(prev => ({ ...prev, companyLogo: 'Please select an image file' }));
+        return;
+      }
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors(prev => ({ ...prev, companyLogo: 'File size should not exceed 5MB' }));
+        return;
+      }
+
+      setLogoFile(file);
+      setErrors(prev => ({ ...prev, companyLogo: '' }));
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const validate = (): boolean => {
@@ -72,17 +96,38 @@ export const SignUpPage: FC = () => {
     if (!validate()) return;
 
     setIsLoading(true);
+    setErrors({});
 
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      console.log('Sign Up Data:', { ...formData, companyLogo });
-      
-      // Show success message or navigate
-      alert('Registration successful! Please check your email for verification.');
-    } catch (error) {
-      setErrors({ submit: 'Registration failed. Please try again.' });
+      const [firstName, ...lastNameParts] = formData.name.split(' ');
+      const lastName = lastNameParts.join(' ') || '';
+
+      // Generate employee ID for first admin user
+      const employeeId = `OIJODO${new Date().getFullYear()}${String(1).padStart(4, '0')}`;
+
+      // Create FormData for file upload
+      const formDataToSend = new FormData();
+      formDataToSend.append('employeeId', employeeId);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
+      formDataToSend.append('role', 'ADMIN');
+      formDataToSend.append('firstName', firstName);
+      formDataToSend.append('lastName', lastName);
+      formDataToSend.append('companyName', formData.companyName);
+      if (logoFile) {
+        formDataToSend.append('companyLogo', logoFile);
+      }
+
+      const response = await authService.signUp(formDataToSend);
+
+      if (response.success) {
+        alert('Admin account created successfully! You can now create employees from the dashboard.');
+        window.location.href = '/dashboard';
+      } else {
+        setErrors({ submit: response.message || 'Registration failed. Please try again.' });
+      }
+    } catch (error: any) {
+      setErrors({ submit: error.message || 'Registration failed. Please try again.' });
     } finally {
       setIsLoading(false);
     }
@@ -109,9 +154,25 @@ export const SignUpPage: FC = () => {
             value={formData.companyName}
             onChange={handleChange}
             error={errors.companyName}
-            icon="upload"
-            onFileSelect={handleLogoSelect}
           />
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Company Logo (optional) :-</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleLogoChange}
+              className={styles.fileInput}
+            />
+            {errors.companyLogo && (
+              <span className={styles.errorText}>{errors.companyLogo}</span>
+            )}
+            {logoPreview && (
+              <div className={styles.logoPreview}>
+                <img src={logoPreview} alt="Logo preview" />
+              </div>
+            )}
+          </div>
 
           <Input
             label="Name :-"

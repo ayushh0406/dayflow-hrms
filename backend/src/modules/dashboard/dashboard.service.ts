@@ -145,13 +145,30 @@ export class DashboardService {
     }
 
     // Admin/HR Dashboard
-    async getAdminDashboard() {
+    async getAdminDashboard(userId: string) {
         try {
-            // Get total employees
-            const totalEmployees = await prisma.employee.count();
+            // Get admin's company
+            const adminEmployee = await prisma.employee.findFirst({
+                where: { userId },
+                select: { companyId: true }
+            });
+
+            if (!adminEmployee) {
+                throw new AppError('Employee profile not found', 404);
+            }
+
+            // Get total employees in company
+            const totalEmployees = await prisma.employee.count({
+                where: { companyId: adminEmployee.companyId }
+            });
 
             const activeEmployees = await prisma.user.count({
-                where: { isActive: true },
+                where: {
+                    isActive: true,
+                    employee: {
+                        companyId: adminEmployee.companyId
+                    }
+                },
             });
 
             // Get today's attendance summary
@@ -159,7 +176,12 @@ export class DashboardService {
             today.setHours(0, 0, 0, 0);
 
             const todayAttendance = await prisma.attendance.findMany({
-                where: { date: today },
+                where: {
+                    date: today,
+                    employee: {
+                        companyId: adminEmployee.companyId
+                    }
+                },
             });
 
             const attendanceToday = {
@@ -175,6 +197,9 @@ export class DashboardService {
             const pendingLeaves = await prisma.leave.findMany({
                 where: {
                     status: LeaveStatus.PENDING,
+                    employee: {
+                        companyId: adminEmployee.companyId
+                    }
                 },
                 include: {
                     employee: {
@@ -197,6 +222,9 @@ export class DashboardService {
 
             // Get recent employees (last 5)
             const recentEmployees = await prisma.employee.findMany({
+                where: {
+                    companyId: adminEmployee.companyId
+                },
                 take: 5,
                 orderBy: {
                     createdAt: 'desc',
@@ -215,14 +243,15 @@ export class DashboardService {
             // Get department-wise employee count
             const departments = await prisma.employee.groupBy({
                 by: ['department'],
-                _count: {
-                    department: true,
-                },
                 where: {
+                    companyId: adminEmployee.companyId,
                     department: {
                         not: null,
                     },
                 },
+                _count: {
+                    department: true,
+                }
             });
 
             // Get this month's statistics

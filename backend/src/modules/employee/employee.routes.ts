@@ -13,6 +13,7 @@ router.get('/me', employeeController.getMyProfile);
 router.put('/me', employeeController.updateMyProfile);
 
 // Admin/HR routes
+router.post('/', authorize('ADMIN', 'HR'), employeeController.createEmployeeByAdmin);
 router.get('/', authorize('ADMIN', 'HR'), employeeController.getAllEmployees);
 router.get('/:id', employeeController.getEmployeeById);
 router.put('/:id', employeeController.updateEmployee);

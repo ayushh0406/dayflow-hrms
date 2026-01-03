@@ -17,8 +17,8 @@ export class PayrollController {
     });
 
     // Get all payroll records (Admin/HR)
-    getAllPayroll = asyncHandler(async (_req: Request, res: Response) => {
-        const payrolls = await this.payrollService.getAllPayroll();
+    getAllPayroll = asyncHandler(async (req: Request, res: Response) => {
+        const payrolls = await this.payrollService.getAllPayroll(req.user!.userId);
         sendSuccess(res, payrolls, 'Payroll records retrieved successfully');
     });
 

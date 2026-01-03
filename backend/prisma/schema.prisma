@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -37,6 +37,16 @@ enum LeaveStatus {
   REJECTED
 }
 
+enum NotificationType {
+  LEAVE_REQUEST
+  LEAVE_APPROVED
+  LEAVE_REJECTED
+  ATTENDANCE_REMINDER
+  PAYROLL_UPDATE
+  SYSTEM_ALERT
+  GENERAL
+}
+
 // User Authentication Model
 model User {
   id                String    @id @default(uuid())
@@ -51,6 +61,7 @@ model User {
   
   // Relations
   employee          Employee?
+  notifications     Notification[]
   
   @@map("users")
 }
@@ -59,6 +70,7 @@ model User {
 model Employee {
   id                String    @id @default(uuid())
   userId            String    @unique
+  companyId         String
   
   // Personal Details
   firstName         String
@@ -93,6 +105,7 @@ model Employee {
   
   // Relations
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company           Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   attendance        Attendance[]
   leaves            Leave[]
   payroll           Payroll?
@@ -156,9 +169,16 @@ model Payroll {
   transportAllowance Float?
   otherAllowances   Float?
   
+  // New Components
+  standardAllowance Float?
+  performanceBonus  Float?
+  leaveTravelAllowance Float?
+  fixedAllowance    Float?
+  
   // Deductions
   taxDeduction      Float?
   providentFund     Float?
+  professionalTax   Float?
   otherDeductions   Float?
   
   // Calculated Fields
@@ -180,4 +200,38 @@ model Payroll {
   employee          Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   
   @@map("payroll")
+}
+
+// Company Model
+model Company {
+  id                String    @id @default(uuid())
+  name              String    @unique
+  logo              String?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  employees         Employee[]
+  
+  @@map("companies")
+}
+
+// Notification Model
+model Notification {
+  id                String            @id @default(uuid())
+  userId            String
+  type              NotificationType  @default(GENERAL)
+  title             String
+  message           String
+  link              String?
+  isRead            Boolean           @default(false)
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  // Relations
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("notifications")
 }

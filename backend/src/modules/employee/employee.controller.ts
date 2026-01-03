@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { asyncHandler } from '../../shared/middlewares';
 import { sendSuccess } from '../../shared/utils';
 import { EmployeeService } from './employee.service';
+import adminEmployeeService from './adminEmployee.service';
 
 export class EmployeeController {
     private employeeService: EmployeeService;
@@ -10,9 +11,19 @@ export class EmployeeController {
         this.employeeService = new EmployeeService();
     }
 
+    // Create employee by Admin/HR with auto-generated ID and password
+    createEmployeeByAdmin = asyncHandler(async (req: Request, res: Response) => {
+        const result = await adminEmployeeService.createEmployeeByAdmin(
+            req.body,
+            req.user!.userId,
+            req.user!.role
+        );
+        sendSuccess(res, result, 'Employee created successfully', 201);
+    });
+
     // Get all employees (Admin/HR)
-    getAllEmployees = asyncHandler(async (_req: Request, res: Response) => {
-        const employees = await this.employeeService.getAllEmployees();
+    getAllEmployees = asyncHandler(async (req: Request, res: Response) => {
+        const employees = await this.employeeService.getAllEmployees(req.user!.userId);
         sendSuccess(res, employees, 'Employees retrieved successfully');
     });
 

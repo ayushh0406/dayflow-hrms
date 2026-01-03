@@ -17,7 +17,7 @@ const config: Config = {
     databaseUrl: process.env.DATABASE_URL || '',
     jwtSecret: process.env.JWT_SECRET || 'default-secret-key',
     jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-    corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
 };
 
 export default config;

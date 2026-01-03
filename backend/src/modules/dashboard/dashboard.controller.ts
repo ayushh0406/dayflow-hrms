@@ -18,7 +18,7 @@ export class DashboardController {
         if (role === 'EMPLOYEE') {
             dashboard = await this.dashboardService.getEmployeeDashboard(userId);
         } else {
-            dashboard = await this.dashboardService.getAdminDashboard();
+            dashboard = await this.dashboardService.getAdminDashboard(userId);
         }
 
         sendSuccess(res, dashboard, 'Dashboard data retrieved successfully');

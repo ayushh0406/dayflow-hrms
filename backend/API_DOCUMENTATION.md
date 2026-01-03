@@ -14,6 +14,27 @@ All protected endpoints require a Bearer token in the Authorization header:
 Authorization: Bearer <your_jwt_token>
 ```
 
+## New Features
+
+### 📧 Email Notifications
+
+- Automated emails for leave approvals/rejections
+- Welcome emails for new users
+- Payroll update notifications
+- Attendance reminders
+
+### 🔔 In-App Notifications
+
+- Real-time notification system
+- Notification history and management
+- Unread notification counter
+
+### 📊 Reports & Analytics
+
+- PDF salary slip generation
+- Attendance reports with summaries
+- Leave reports with analytics
+
 ---
 
 ## 1. Authentication Endpoints
@@ -439,6 +460,196 @@ Get dashboard data based on user role.
 **GET** `/dashboard/stats`
 
 Get quick statistics based on role.
+
+---
+
+## 7. Notifications Endpoints
+
+### 7.1 Get Notifications
+
+**GET** `/notifications`
+
+Get user notifications with optional filtering.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Query Parameters:**
+
+- `limit` (number, optional): Max notifications (default: 50)
+- `isRead` (boolean, optional): Filter by read status
+- `type` (string, optional): Filter by notification type
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Notifications retrieved successfully",
+  "data": [
+    {
+      "id": "uuid",
+      "userId": "user-uuid",
+      "type": "LEAVE_APPROVED",
+      "title": "Leave Request Approved",
+      "message": "Your SICK leave request from 1/20/2026 to 1/21/2026 has been approved.",
+      "link": "/leaves",
+      "isRead": false,
+      "createdAt": "2026-01-03T10:00:00.000Z"
+    }
+  ]
+}
+```
+
+### 7.2 Get Unread Count
+
+**GET** `/notifications/unread-count`
+
+Get count of unread notifications.
+
+**Headers:** `Authorization: Bearer <token>`
+
+### 7.3 Mark as Read
+
+**PATCH** `/notifications/:id/read`
+
+Mark a specific notification as read.
+
+**Headers:** `Authorization: Bearer <token>`
+
+### 7.4 Mark All as Read
+
+**PATCH** `/notifications/read-all`
+
+Mark all user notifications as read.
+
+**Headers:** `Authorization: Bearer <token>`
+
+### 7.5 Delete Notification
+
+**DELETE** `/notifications/:id`
+
+Delete a specific notification.
+
+**Headers:** `Authorization: Bearer <token>`
+
+---
+
+## 8. Reports Endpoints
+
+### 8.1 Generate Salary Slip
+
+**POST** `/reports/salary-slip`
+
+Generate PDF salary slip for an employee.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Request Body:**
+
+```json
+{
+  "employeeId": "employee-uuid",
+  "month": "January",
+  "year": 2026
+}
+```
+
+**Response:** PDF file download
+
+### 8.2 Get Attendance Report
+
+**GET** `/reports/attendance`
+
+Get attendance report with summary.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Query Parameters:**
+
+- `employeeId` (string, optional): Filter by employee (Admin/HR only)
+- `startDate` (date, required): Start date (YYYY-MM-DD)
+- `endDate` (date, required): End date (YYYY-MM-DD)
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Attendance report generated successfully",
+  "data": {
+    "records": [...],
+    "summary": {
+      "totalDays": 20,
+      "present": 18,
+      "absent": 1,
+      "halfDay": 0,
+      "leave": 1,
+      "totalWorkHours": 153.5
+    },
+    "period": {
+      "startDate": "2026-01-01",
+      "endDate": "2026-01-31"
+    }
+  }
+}
+```
+
+### 8.3 Get Leave Report
+
+**GET** `/reports/leaves`
+
+Get leave report with summary.
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Query Parameters:**
+
+- `employeeId` (string, optional): Filter by employee (Admin/HR only)
+- `startDate` (date, optional): Start date filter
+- `endDate` (date, optional): End date filter
+- `status` (string, optional): Filter by status (PENDING/APPROVED/REJECTED)
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Leave report generated successfully",
+  "data": {
+    "records": [...],
+    "summary": {
+      "totalLeaves": 5,
+      "approved": 4,
+      "rejected": 1,
+      "pending": 0,
+      "totalDays": 12,
+      "byType": {
+        "PAID": 8,
+        "SICK": 2,
+        "CASUAL": 2,
+        "UNPAID": 0
+      }
+    }
+  }
+}
+```
+
+---
+
+## Email Configuration
+
+To enable email notifications, add the following to your `.env` file:
+
+```env
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_SECURE=false
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+EMAIL_FROM_NAME=DayFlow HRMS
+```
+
+**Note:** For Gmail, use an [App Password](https://support.google.com/accounts/answer/185833) instead of your regular password.
 
 ---
 

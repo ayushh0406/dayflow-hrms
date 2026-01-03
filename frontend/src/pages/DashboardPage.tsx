@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { EmployeeCard } from '@/components/common/EmployeeCard';
@@ -6,6 +6,12 @@ import { AdminAttendanceView } from '@/components/features/attendance/AdminAtten
 import { EmployeeAttendanceView } from '@/components/features/attendance/EmployeeAttendanceView';
 import { TimeOffView } from '@/components/features/timeoff/TimeOffView';
 import { Button } from '@/components/common/Button';
+import { CreateEmployeeModal } from '@/components/employees/CreateEmployeeModal';
+import { employeeService } from '@/features/employees/services';
+import { attendanceService } from '@/features/attendance/services';
+import { authService } from '@/features/auth/services';
+import type { Employee } from '@/features/employees/services';
+import type { Attendance } from '@/features/attendance/services';
 import styles from './DashboardPage.module.css';
 
 type DashboardView = 'employees' | 'admin-attendance' | 'employee-attendance' | 'time-off';

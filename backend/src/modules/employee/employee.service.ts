@@ -3,10 +3,27 @@ import { AppError } from '../../shared/middlewares';
 import { UpdateEmployeeDto } from './employee.types';
 
 export class EmployeeService {
-    // Get all employees (Admin/HR only)
-    async getAllEmployees() {
+    // Helper to get user's company ID
+    private async getUserCompanyId(userId: string): Promise<string> {
+        const employee = await prisma.employee.findFirst({
+            where: { userId },
+            select: { companyId: true }
+        });
+        if (!employee) {
+            throw new AppError('Employee profile not found', 404);
+        }
+        return employee.companyId;
+    }
+
+    // Get all employees (Admin/HR only) - filtered by company
+    async getAllEmployees(requestingUserId: string) {
         try {
+            const companyId = await this.getUserCompanyId(requestingUserId);
+
             const employees = await prisma.employee.findMany({
+                where: {
+                    companyId: companyId
+                },
                 include: {
                     user: {
                         select: {
@@ -20,6 +37,7 @@ export class EmployeeService {
             });
             return employees;
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError('Failed to fetch employees', 500);
         }
     }

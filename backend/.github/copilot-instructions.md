@@ -11,18 +11,38 @@ This is a Node.js backend application built with TypeScript, Express.js, and Pri
 ```
 backend/
 ├── src/
-│   ├── config/          # Configuration files (env, database)
-│   ├── controllers/     # Request handlers (thin layer)
-│   ├── services/        # Business logic layer
-│   ├── routes/          # API route definitions
-│   ├── middlewares/     # Custom middleware (auth, validation, error handling)
-│   ├── types/           # TypeScript interfaces and types
-│   ├── utils/           # Utility functions and helpers
+│   ├── modules/         # Feature modules (modular architecture)
+│   │   ├── auth/        # Authentication module
+│   │   ├── employee/    # Employee management
+│   │   ├── attendance/  # Attendance tracking
+│   │   ├── leave/       # Leave management
+│   │   ├── payroll/     # Payroll management
+│   │   ├── dashboard/   # Dashboard analytics
+│   │   └── notifications/ # Notifications module
+│   ├── shared/          # Shared resources
+│   │   ├── config/      # Configuration files
+│   │   ├── middlewares/ # Custom middleware
+│   │   ├── utils/       # Utility functions
+│   │   └── services/    # Shared services (email, etc.)
 │   ├── app.ts           # Express app configuration
-│   └── index.ts         # Application entry point
+│   ├── index.ts         # Application entry point
+│   └── routes.ts        # Main route mounting
 ├── prisma/
 │   └── schema.prisma    # Database schema
 └── package.json
+```
+
+### Module Structure
+
+Each module follows a consistent structure:
+
+```
+module-name/
+├── module-name.controller.ts  # Request handlers
+├── module-name.service.ts     # Business logic
+├── module-name.routes.ts      # Route definitions
+├── module-name.types.ts       # TypeScript interfaces/types
+└── README.md                  # Module documentation
 ```
 
 ## Coding Guidelines
@@ -36,11 +56,12 @@ backend/
 
 ### 2. File Naming Conventions
 
-- Controllers: `*.controller.ts` (e.g., `user.controller.ts`)
-- Services: `*.service.ts` (e.g., `user.service.ts`)
-- Routes: `*.routes.ts` (e.g., `user.routes.ts`)
-- Middlewares: `*.middleware.ts` or descriptive names (e.g., `errorHandler.ts`)
-- Types: `*.types.ts` (e.g., `user.types.ts`)
+- Controllers: `[module-name].controller.ts` (e.g., `auth.controller.ts`)
+- Services: `[module-name].service.ts` (e.g., `auth.service.ts`)
+- Routes: `[module-name].routes.ts` (e.g., `auth.routes.ts`)
+- Types: `[module-name].types.ts` (e.g., `auth.types.ts`)
+- Middlewares: `*.middleware.ts` or descriptive names (e.g., `authenticate.ts`)
+- Module README: `README.md` (in each module folder)
 
 ### 3. TypeScript Best Practices
 
@@ -136,16 +157,93 @@ export class UserService {
 
 ## When Adding New Features
 
-### Creating a New Resource/Module:
+### Creating a New Module:
 
-1. Define Prisma model in `schema.prisma`
-2. Run `npm run prisma:generate` and `npm run prisma:migrate`
-3. Create types in `src/types/[resource].types.ts`
-4. Create service in `src/services/[resource].service.ts`
-5. Create controller in `src/controllers/[resource].controller.ts`
-6. Create routes in `src/routes/[resource].routes.ts`
-7. Mount routes in `src/routes/index.ts`
-8. Export from index files for clean imports
+1. Create module folder in `src/modules/[module-name]/`
+2. Define Prisma model in `schema.prisma`
+3. Run `npm run prisma:generate` and `npm run prisma:migrate`
+4. Create `[module-name].types.ts` with DTOs and interfaces
+5. Create `[module-name].service.ts` with business logic
+6. Create `[module-name].controller.ts` with route handlers
+7. Create `[module-name].routes.ts` with route definitions
+8. Create `README.md` documenting the module's API
+9. Mount routes in `src/routes.ts`
+
+### Module Template:
+
+**[module-name].types.ts:**
+
+```typescript
+export interface CreateResourceDto {
+  field1: string;
+  field2: number;
+}
+
+export interface UpdateResourceDto {
+  field1?: string;
+  field2?: number;
+}
+```
+
+**[module-name].service.ts:**
+
+```typescript
+import prisma from "../../shared/config/database";
+import { AppError } from "../../shared/middlewares";
+
+export class ResourceService {
+  async createResource(data: CreateResourceDto) {
+    try {
+      const resource = await prisma.resource.create({ data });
+      return resource;
+    } catch (error) {
+      throw new AppError("Failed to create resource", 500);
+    }
+  }
+}
+```
+
+**[module-name].controller.ts:**
+
+```typescript
+import { Request, Response } from "express";
+import { asyncHandler } from "../../shared/middlewares";
+import { sendSuccess } from "../../shared/utils";
+import { ResourceService } from "./resource.service";
+
+export class ResourceController {
+  private resourceService: ResourceService;
+
+  constructor() {
+    this.resourceService = new ResourceService();
+  }
+
+  createResource = asyncHandler(async (req: Request, res: Response) => {
+    const resource = await this.resourceService.createResource(req.body);
+    sendSuccess(res, resource, "Resource created successfully", 201);
+  });
+}
+```
+
+**[module-name].routes.ts:**
+
+```typescript
+import { Router } from "express";
+import { ResourceController } from "./resource.controller";
+import { authenticate, authorize } from "../../shared/middlewares";
+
+const router = Router();
+const resourceController = new ResourceController();
+
+router.post(
+  "/",
+  authenticate,
+  authorize(["ADMIN"]),
+  resourceController.createResource
+);
+
+export default router;
+```
 
 ### Adding Middleware:
 
@@ -155,9 +253,44 @@ export class UserService {
 
 ### Adding Utilities:
 
-1. Create in `src/utils/[name].ts`
-2. Export from `src/utils/index.ts`
+1. Create in `src/shared/utils/[name].ts`
+2. Export from `src/shared/utils/index.ts`
 3. Keep utilities pure and reusable
+
+### Adding Shared Services:
+
+1. Create in `src/shared/services/[name].service.ts`
+2. Export as singleton for services with state (email, notifications)
+3. Use for cross-cutting concerns (email, file upload, external APIs)
+
+**Example: Email Service**
+
+```typescript
+// src/shared/services/email.service.ts
+export class EmailService {
+  async sendEmail(options: EmailOptions): Promise<void> {
+    // Implementation
+  }
+}
+export default new EmailService();
+```
+
+## Existing Modules
+
+### Core Modules:
+
+- **auth**: User authentication and authorization
+- **employee**: Employee profile management
+- **attendance**: Attendance tracking and check-in/out
+- **leave**: Leave application and approval workflow
+- **payroll**: Salary management and payroll processing
+- **dashboard**: Analytics and statistics dashboards
+- **notifications**: In-app notification system
+
+### Shared Services:
+
+- **email.service.ts**: Email notifications (uses nodemailer)
+- **notification.service.ts**: In-app notifications (integrated in notifications module)
 
 ## Security Best Practices
 

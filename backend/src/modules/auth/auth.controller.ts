@@ -14,6 +14,15 @@ export class AuthController {
     // Sign Up
     signUp = asyncHandler(async (req: Request, res: Response) => {
         const userData: SignUpDto = req.body;
+
+        // Add logo path if file was uploaded, otherwise set to undefined
+        if (req.file) {
+            userData.companyLogo = `/uploads/${req.file.filename}`;
+        } else {
+            // Remove companyLogo if it's an empty object or set it to undefined
+            userData.companyLogo = undefined;
+        }
+
         const result = await this.authService.signUp(userData);
         sendSuccess(res, result, 'User registered successfully', 201);
     });
