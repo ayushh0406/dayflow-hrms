@@ -55,17 +55,14 @@ export class AuthService {
             }
 
             // Check if user already exists
-            const existingUser = await prisma.user.findFirst({
-                where: {
-                    OR: [
-                        { email: data.email },
-                        { employeeId: data.employeeId }
-                    ]
-                }
-            });
+            const existingEmail = await prisma.user.findUnique({ where: { email: data.email } });
+            if (existingEmail) {
+                throw new AppError('User with this email already exists', 400);
+            }
 
-            if (existingUser) {
-                throw new AppError('User with this email or employee ID already exists', 400);
+            const existingEmployeeId = await prisma.user.findUnique({ where: { employeeId: data.employeeId } });
+            if (existingEmployeeId) {
+                throw new AppError(`User with Employee ID '${data.employeeId}' already exists. Please use a unique ID.`, 400);
             }
 
             // Check if company exists

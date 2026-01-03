@@ -21,7 +21,10 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
         department: '',
         designation: '',
         dateOfJoining: '',
-        salary: '',
+        basicSalary: '',
+        hra: '',
+        specialAllowance: '',
+        otherAllowance: '',
     });
 
     const [createdEmployee, setCreatedEmployee] = useState<{
@@ -56,7 +59,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
         if (!formData.department.trim()) newErrors.department = 'Department is required';
         if (!formData.designation.trim()) newErrors.designation = 'Designation is required';
         if (!formData.dateOfJoining) newErrors.dateOfJoining = 'Date of joining is required';
-        if (!formData.salary) newErrors.salary = 'Fixed Wage is required';
+        if (!formData.basicSalary) newErrors.basicSalary = 'Basic salary is required';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -71,6 +74,32 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
         setErrors({});
 
         try {
+            const salaryComponents = [];
+
+            if (formData.hra) {
+                salaryComponents.push({
+                    name: 'HRA',
+                    amount: parseFloat(formData.hra),
+                    computationType: 'FIXED' as const,
+                });
+            }
+
+            if (formData.specialAllowance) {
+                salaryComponents.push({
+                    name: 'Special Allowance',
+                    amount: parseFloat(formData.specialAllowance),
+                    computationType: 'FIXED' as const,
+                });
+            }
+
+            if (formData.otherAllowance) {
+                salaryComponents.push({
+                    name: 'Other Allowance',
+                    amount: parseFloat(formData.otherAllowance),
+                    computationType: 'FIXED' as const,
+                });
+            }
+
             const response = await employeeService.createByAdmin({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -80,7 +109,7 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
                 department: formData.department,
                 designation: formData.designation,
                 joiningDate: new Date(formData.dateOfJoining).toISOString(),
-                salary: parseFloat(formData.salary),
+                salary: parseFloat(formData.basicSalary),
                 companyName: 'Company', // TODO: Get from settings
             });
 
@@ -113,7 +142,10 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
             department: '',
             designation: '',
             dateOfJoining: '',
-            salary: '',
+            basicSalary: '',
+            hra: '',
+            specialAllowance: '',
+            otherAllowance: '',
         });
         setErrors({});
         onClose();
@@ -252,14 +284,43 @@ export const CreateEmployeeModal: FC<CreateEmployeeModalProps> = ({ isOpen, onCl
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Fixed Wage (CTC) *</label>
+                                <label>Basic Salary *</label>
                                 <Input
                                     type="number"
-                                    name="salary"
-                                    value={formData.salary}
+                                    name="basicSalary"
+                                    value={formData.basicSalary}
                                     onChange={handleChange}
-                                    placeholder="Enter total monthly wage"
-                                    error={errors.salary}
+                                    error={errors.basicSalary}
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>HRA</label>
+                                <Input
+                                    type="number"
+                                    name="hra"
+                                    value={formData.hra}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Special Allowance</label>
+                                <Input
+                                    type="number"
+                                    name="specialAllowance"
+                                    value={formData.specialAllowance}
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Other Allowance</label>
+                                <Input
+                                    type="number"
+                                    name="otherAllowance"
+                                    value={formData.otherAllowance}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>

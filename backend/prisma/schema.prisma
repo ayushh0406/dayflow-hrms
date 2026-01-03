@@ -169,16 +169,9 @@ model Payroll {
   transportAllowance Float?
   otherAllowances   Float?
   
-  // New Components
-  standardAllowance Float?
-  performanceBonus  Float?
-  leaveTravelAllowance Float?
-  fixedAllowance    Float?
-  
   // Deductions
   taxDeduction      Float?
   providentFund     Float?
-  professionalTax   Float?
   otherDeductions   Float?
   
   // Calculated Fields

@@ -42,7 +42,8 @@ export const API_ENDPOINTS = {
     UPDATE: (id: string) => `/payroll/${id}`,
   },
   DASHBOARD: {
-    OVERVIEW: '/dashboard/overview',
+    GET: '/dashboard',
+    QUICK_STATS: '/dashboard/quick-stats',
   },
   NOTIFICATIONS: {
     GET_ALL: '/notifications',

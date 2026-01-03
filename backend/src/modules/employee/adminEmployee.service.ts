@@ -138,41 +138,18 @@ export class AdminEmployeeService {
                     }
                 });
 
-                // Calculate Salary Components
-                const wage = data.salary;
-                const basic = wage * 0.5;
-                const hra = basic * 0.5;
-                const standardAllowance = 4167;
-                const performanceBonus = basic * 0.0833;
-                const lta = basic * 0.08333;
-
-                // Fixed Allowance = Wage - (Basic + HRA + Standard + Performance + LTA)
-                let fixedAllowance = wage - (basic + hra + standardAllowance + performanceBonus + lta);
-                if (fixedAllowance < 0) fixedAllowance = 0; // Ensure non-negative
-
-                // Deductions
-                const pf = basic * 0.12;
-                const professionalTax = 200;
-                const totalDeductions = pf + professionalTax;
-
-                const netSalary = wage - totalDeductions;
-
                 // Create initial payroll structure
                 const payroll = await tx.payroll.create({
                     data: {
                         employeeId: employee.id,
-                        basicSalary: basic,
-                        houseRentAllowance: hra,
-                        standardAllowance: standardAllowance,
-                        performanceBonus: performanceBonus,
-                        leaveTravelAllowance: lta,
-                        fixedAllowance: fixedAllowance,
-
-                        providentFund: pf,
-                        professionalTax: professionalTax,
-
-                        grossSalary: wage,
-                        netSalary: netSalary,
+                        basicSalary: data.salary * 0.5, // 50% basic
+                        houseRentAllowance: data.salary * 0.25, // 25% HRA
+                        transportAllowance: data.salary * 0.1, // 10% transport
+                        otherAllowances: data.salary * 0.15, // 15% other
+                        providentFund: data.salary * 0.12, // 12% PF
+                        taxDeduction: data.salary * 0.1, // 10% tax (example)
+                        grossSalary: data.salary,
+                        netSalary: data.salary - (data.salary * 0.22), // After deductions
                         currency: 'INR',
                     }
                 });
