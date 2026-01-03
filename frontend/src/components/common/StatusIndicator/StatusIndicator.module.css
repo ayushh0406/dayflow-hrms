@@ -1,0 +1,92 @@
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-card);
+}
+
+.green {
+  background-color: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.yellow {
+  background-color: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+}
+
+.orange {
+  background-color: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
+}
+
+.gray {
+  background-color: var(--color-gray-500);
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-info);
+  border-radius: 4px;
+  color: white;
+}
+
+/* Sizes */
+.sm .dot {
+  width: 8px;
+  height: 8px;
+  border-width: 1px;
+}
+
+.sm .iconContainer {
+  width: 18px;
+  height: 18px;
+}
+
+.sm .iconContainer svg {
+  width: 12px;
+  height: 12px;
+}
+
+.md .dot {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
+}
+
+.md .iconContainer {
+  width: 24px;
+  height: 24px;
+}
+
+.md .iconContainer svg {
+  width: 16px;
+  height: 16px;
+}
+
+.lg .dot {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.lg .iconContainer {
+  width: 32px;
+  height: 32px;
+}
+
+.lg .iconContainer svg {
+  width: 20px;
+  height: 20px;
+}

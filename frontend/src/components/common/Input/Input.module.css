@@ -1,0 +1,117 @@
+.inputWrapper {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 13px 16px;
+  font-size: 15px;
+  color: var(--input-text);
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--border-radius-md);
+  outline: none;
+  transition: all var(--transition-base);
+  font-family: var(--font-family);
+}
+
+.input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: var(--color-error);
+}
+
+.inputError:focus {
+  border-color: var(--color-error);
+}
+
+.iconButton,
+.uploadButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.iconButton:hover,
+.uploadButton:hover {
+  color: var(--color-primary);
+}
+
+.icon {
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.iconButton:hover .icon,
+.uploadButton:hover .icon {
+  color: var(--color-primary);
+}
+
+.iconButton svg,
+.uploadButton svg {
+  color: inherit;
+}
+
+.fileInput {
+  display: none;
+}
+
+.error {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  
+  .label {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  
+  .error {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,164 @@
+.card {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-xl);
+  padding: 28px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-primary));
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, #2a2a2a 0%, var(--bg-card) 100%);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:active {
+  transform: translateY(-4px);
+}
+
+.statusBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.avatarContainer {
+  margin-top: 12px;
+  position: relative;
+}
+
+.avatarContainer::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.card:hover .avatarContainer::after {
+  opacity: 0.3;
+}
+
+.info {
+  text-align: center;
+  width: 100%;
+  z-index: 1;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(135deg, var(--text-primary), #e5e5e5);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all var(--transition-base);
+}
+
+.card:hover .name {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.position {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+
+.department {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin: 0;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 24px;
+    gap: 16px;
+  }
+  
+  .name {
+    font-size: 16px;
+  }
+  
+  .position {
+    font-size: 13px;
+  }
+  
+  .department {
+    font-size: 12px;
+  }
+  
+  .statusBadge {
+    top: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+    gap: 14px;
+  }
+  
+  .name {
+    font-size: 15px;
+  }
+  
+  .position {
+    font-size: 12px;
+  }
+  
+  .department {
+    font-size: 11px;
+  }
+  
+  .statusBadge {
+    top: 14px;
+    right: 14px;
+  }
+  
+  .avatarContainer {
+    margin-top: 8px;
+  }
+}

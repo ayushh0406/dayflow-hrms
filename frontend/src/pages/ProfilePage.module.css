@@ -1,0 +1,955 @@
+.profileContainer {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-sticky);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-base);
+}
+
+.backButton:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.headerRight {
+  display: flex;
+  gap: 12px;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profileContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Profile Info Section */
+.profileInfo {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 32px;
+}
+
+/* Left Column */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profileCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+}
+
+.avatarSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.avatarContainer {
+  position: relative;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5a3c, #a0522d);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 4px solid var(--border-color);
+}
+
+.editAvatarButton {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all var(--transition-base);
+}
+
+.editAvatarButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: scale(1.1);
+}
+
+.basicInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.infoGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.infoGroup label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoValue {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.editInput {
+  margin: 0 !important;
+}
+
+.tabsContainer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  grid-column: 1 / -1;
+}
+
+.tabs {
+  display: flex;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-base);
+  text-align: center;
+  min-width: 120px;
+}
+
+.tab:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.activeTab {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+/* Company Info - Right Column */
+.companyInfo {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tab Content Below */
+.tabContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
+}
+
+.contentSections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Private Info Styles */
+.privateInfoContent {
+  width: 100%;
+}
+
+.privateInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.privateInfoLeft,
+.privateInfoRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selectInput {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.selectInput:focus {
+  border-color: var(--color-primary);
+}
+
+/* Security Styles */
+.securityContent {
+  width: 100%;
+}
+
+.securityGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.securityOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  margin-bottom: 12px;
+}
+
+.securityOptionInfo h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.securityOptionInfo p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.changePasswordBtn {
+  margin-top: 8px;
+}
+
+.loginHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loginItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+}
+
+.loginDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.loginDevice {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.loginTime {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.loginStatus {
+  font-size: 12px;
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.loginExpired {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.logoutBtn {
+  color: var(--color-error) !important;
+}
+
+.companyInfo {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.infoRow {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentSections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+}
+
+.section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+}
+
+.addButton {
+  background: none;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 6px 12px;
+  border-radius: var(--border-radius-md);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.addButton:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.sectionText {
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.textArea {
+  width: 100%;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+}
+
+.textArea:focus {
+  border-color: var(--color-primary);
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillTag {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-md);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.certificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.certificationItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+  border-left: 3px solid var(--color-secondary);
+}
+
+.certName {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.certIssuer {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.certDate {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.emptyText {
+  color: var(--text-tertiary);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Salary Section */
+.salarySection {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+.salaryOverview {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+  grid-column: 1 / -1;
+}
+
+.salaryCard {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  display: flex;
+  gap: 40px;
+}
+
+.salaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.salaryLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.salaryValue {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.amount {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.period {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.workingDays {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  display: flex;
+  gap: 40px;
+}
+
+.workingDaysItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.workingDaysLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.workingDaysValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daysInput, .hoursInput {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  width: 80px;
+  outline: none;
+}
+
+.daysInput:focus, .hoursInput:focus {
+  border-color: var(--color-primary);
+}
+
+.hoursLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.salaryComponentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.salaryComponent {
+  display: grid;
+  grid-template-columns: 2fr auto auto;
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--color-primary);
+}
+
+.componentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.componentName {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.componentDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.componentValue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.componentAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.componentCurrency {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.componentPercentage {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-align: right;
+  min-width: 60px;
+}
+
+.rightSalaryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pfSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pfItem {
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--color-secondary);
+}
+
+.pfLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pfDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.pfValue {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pfAmount {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pfCurrency {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.pfPercentage {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.taxItem {
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--color-warning);
+}
+
+.taxLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.taxDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.taxValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.taxAmount {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.taxCurrency {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profileInfo {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .profileContent {
+    padding: 24px 20px;
+  }
+  
+  .tabContent {
+    padding: 0 20px 32px;
+  }
+  
+  .companyInfo {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .privateInfoGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .salarySection {
+    grid-template-columns: 1fr;
+  }
+  
+  .salaryCard {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .workingDays {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .salaryComponent {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+  
+  .componentValue {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .headerLeft {
+    align-self: flex-start;
+  }
+  
+  .headerRight {
+    align-self: flex-end;
+  }
+  
+  .profileContent {
+    padding: 20px 16px;
+  }
+  
+  .tabContent {
+    padding: 0 16px 32px;
+  }
+  
+  .profileCard {
+    padding: 24px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .section {
+    padding: 20px;
+  }
+  
+  .salaryCard {
+    padding: 20px;
+  }
+  
+  .workingDays {
+    padding: 20px;
+  }
+  
+  .amount {
+    font-size: 24px;
+  }
+  
+  .tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .tab {
+    min-width: auto;
+    flex: 1;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 12px;
+  }
+  
+  .pageTitle {
+    font-size: 18px;
+  }
+  
+  .profileContent {
+    padding: 16px 12px;
+  }
+  
+  .tabContent {
+    padding: 0 12px 32px;
+  }
+  
+  .profileCard {
+    padding: 20px;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .tabs {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .tab {
+    text-align: left;
+    min-width: auto;
+  }
+  
+  .salaryCard {
+    padding: 16px;
+  }
+  
+  .workingDays {
+    padding: 16px;
+  }
+  
+  .salaryComponent {
+    padding: 16px;
+  }
+  
+  .amount {
+    font-size: 20px;
+  }
+  
+  .componentName {
+    font-size: 14px;
+  }
+  
+  .componentAmount {
+    font-size: 16px;
+  }
+  
+  .securityOption {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .loginItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

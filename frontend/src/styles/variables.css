@@ -1,14 +1,14 @@
 /* Color Palette */
 :root {
-  /* Primary Colors */
-  --color-primary: #2563eb;
-  --color-primary-dark: #1e40af;
-  --color-primary-light: #60a5fa;
+  /* Primary Colors - Purple theme from design */
+  --color-primary: #a855f7;
+  --color-primary-dark: #9333ea;
+  --color-primary-light: #c084fc;
   
-  /* Secondary Colors */
-  --color-secondary: #10b981;
-  --color-secondary-dark: #059669;
-  --color-secondary-light: #34d399;
+  /* Secondary Colors - Green accents */
+  --color-secondary: #22c55e;
+  --color-secondary-dark: #16a34a;
+  --color-secondary-light: #4ade80;
   
   /* Neutral Colors */
   --color-white: #ffffff;
@@ -31,21 +31,28 @@
   --color-info: #3b82f6;
   
   /* Background */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f3f4f6;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --bg-card: #1f1f1f;
   
   /* Text */
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #6b7280;
   
   /* Border */
-  --border-color: #e5e7eb;
+  --border-color: #2a2a2a;
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
   --border-radius-lg: 12px;
   --border-radius-xl: 16px;
+  
+  /* Input specific */
+  --input-bg: #2a2a2a;
+  --input-border: #3a3a3a;
+  --input-text: #ffffff;
+  --input-placeholder: #6b7280;
   
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
