@@ -1,0 +1,246 @@
+.attendanceView {
+  width: 100%;
+  max-width: none;
+}
+
+.navigationBar {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.navControls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navButton {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.navButton:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.monthSelector {
+  margin-left: 8px;
+}
+
+.monthButton {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.monthButton:hover {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.statsContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.statCard {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 140px;
+  transition: all var(--transition-base);
+}
+
+.statCard:hover {
+  background-color: var(--bg-card);
+  border-color: var(--color-primary);
+}
+
+.statHeader {
+  padding: 8px;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statCard:nth-child(1) .statHeader {
+  color: var(--color-success);
+}
+
+.statCard:nth-child(2) .statHeader {
+  color: var(--color-warning);
+}
+
+.statCard:nth-child(3) .statHeader {
+  color: var(--color-info);
+}
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statNumber {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.statLabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.currentDate {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.currentDate h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.dayName {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tableContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.attendanceTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendanceTable thead {
+  background-color: var(--bg-tertiary);
+}
+
+.attendanceTable th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.attendanceTable tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-base);
+}
+
+.attendanceTable tbody tr:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.attendanceTable td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.dateCell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hoursCell {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navigationBar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .navControls {
+    justify-content: center;
+  }
+  
+  .statsContainer {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .attendanceTable {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navControls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .statsContainer {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .statCard {
+    min-width: auto;
+  }
+}

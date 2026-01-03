@@ -1,0 +1,448 @@
+.attendanceContainer {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.header {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-sticky);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-base);
+}
+
+.backButton:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.navigationBar {
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: var(--border-radius-xl);
+  padding: 24px;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.navSection {
+  display: flex;
+  align-items: center;
+}
+
+.navControls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navButton {
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 12px;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navButton:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+}
+
+.monthDropdown {
+  position: relative;
+}
+
+.dropdownButton {
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card));
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 12px 20px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownButton:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+}
+
+.statsContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.statCard {
+  background: linear-gradient(135deg, var(--bg-tertiary), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-xl);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 180px;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.statCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(168, 85, 247, 0.2);
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.statCard:nth-child(1) {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.statCard:nth-child(1)::before {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.statCard:nth-child(2) {
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.statCard:nth-child(2)::before {
+  background: linear-gradient(90deg, #f97316, #ea580c);
+}
+
+.statCard:nth-child(3) {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.statCard:nth-child(3)::before {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.statIcon {
+  padding: 12px;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.statCard:nth-child(1) .statIcon {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.statCard:nth-child(2) .statIcon {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+}
+
+.statCard:nth-child(3) .statIcon {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.currentDate {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.dateCard {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--border-radius-xl);
+  padding: 24px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 12px 40px rgba(168, 85, 247, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.dateCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+}
+
+.dateText {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.dayText {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.tableContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.attendanceTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendanceTable thead tr {
+  background-color: var(--bg-tertiary);
+}
+
+.attendanceTable th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dateColumn {
+  width: 200px;
+}
+
+.timeColumn {
+  width: 150px;
+}
+
+.hoursColumn {
+  width: 150px;
+}
+
+.tableRow {
+  transition: all var(--transition-base);
+}
+
+.tableRow:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.attendanceTable td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dateCell {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.timeCell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hoursCell {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .content {
+    padding: 20px 16px;
+  }
+  
+  .navigationBar {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .statsContainer {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .navControls {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+  }
+  
+  .content {
+    padding: 16px 12px;
+  }
+  
+  .navigationBar {
+    padding: 16px;
+  }
+  
+  .statsContainer {
+    gap: 12px;
+  }
+  
+  .statCard {
+    min-width: 120px;
+    padding: 10px 16px;
+  }
+  
+  .statLabel {
+    font-size: 10px;
+  }
+  
+  .statValue {
+    font-size: 18px;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .attendanceTable {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navButton,
+  .dropdownButton {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .statsContainer {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .statCard {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .attendanceTable th,
+  .attendanceTable td {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+  
+  .currentDate {
+    font-size: 16px;
+  }
+}

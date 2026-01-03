@@ -1,0 +1,410 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-xl);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-base);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.modalContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 120px;
+  text-align: left;
+}
+
+.inputField {
+  flex: 1;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-base);
+}
+
+.inputField:focus {
+  border-color: var(--color-primary);
+}
+
+.inputField::placeholder {
+  color: var(--text-secondary);
+}
+
+.selectField {
+  flex: 1;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-base);
+  cursor: pointer;
+}
+
+.selectField:focus {
+  border-color: var(--color-primary);
+}
+
+.employeeValue {
+  color: var(--color-info);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.typeValue {
+  color: var(--color-info);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dateRange {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.dateInput {
+  flex: 1;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-base);
+}
+
+.dateInput:focus {
+  border-color: var(--color-primary);
+}
+
+.dateValue {
+  color: var(--color-info);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dateSeparator {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.allocationContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.allocationInput {
+  width: 80px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-base);
+  text-align: center;
+}
+
+.allocationInput:focus {
+  border-color: var(--color-primary);
+}
+
+.allocationValue {
+  color: var(--color-info);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.allocationUnit {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.attachmentContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.fileInput {
+  display: none;
+}
+
+.uploadButton {
+  background-color: var(--color-info);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 10px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.uploadButton:hover {
+  background-color: var(--color-info-dark);
+  transform: translateY(-1px);
+}
+
+.attachmentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fileName {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.attachmentNote {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-color);
+  justify-content: flex-start;
+}
+
+.submitButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-width: 80px;
+}
+
+.submitButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.discardButton {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  min-width: 80px;
+}
+
+.discardButton:hover {
+  background-color: var(--bg-card);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modalContainer {
+    width: 95%;
+    max-width: none;
+    margin: 20px;
+  }
+  
+  .modalContent {
+    padding: 20px;
+    gap: 16px;
+  }
+  
+  .formRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .label {
+    min-width: auto;
+  }
+  
+  .inputField,
+  .selectField {
+    width: 100%;
+  }
+  
+  .dateRange {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .dateInput {
+    width: 100%;
+  }
+  
+  .dateSeparator {
+    align-self: center;
+  }
+  
+  .allocationContainer {
+    align-self: flex-start;
+  }
+  
+  .attachmentContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .modalActions {
+    padding: 16px 20px;
+    flex-direction: column;
+  }
+  
+  .submitButton,
+  .discardButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalHeader {
+    padding: 16px 20px;
+  }
+  
+  .modalTitle {
+    font-size: 18px;
+  }
+  
+  .modalContent {
+    padding: 16px;
+  }
+  
+  .dateRange {
+    gap: 6px;
+  }
+  
+  .allocationInput {
+    width: 60px;
+  }
+}

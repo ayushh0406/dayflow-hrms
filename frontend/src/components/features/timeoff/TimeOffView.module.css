@@ -1,0 +1,370 @@
+.timeOffContainer {
+  width: 100%;
+  max-width: none;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 24px;
+}
+
+.tabsContainer {
+  display: flex;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.activeTab {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.newButton {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.newButton:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.searchContainer {
+  width: 300px;
+}
+
+.searchInput {
+  width: 100%;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 10px 16px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color var(--transition-base);
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+}
+
+.searchInput::placeholder {
+  color: var(--text-secondary);
+}
+
+.statsSection {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  flex: 1;
+  max-width: 300px;
+}
+
+.statTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.statCard:first-child .statTitle {
+  color: var(--color-info);
+}
+
+.statCard:last-child .statTitle {
+  color: var(--color-warning);
+}
+
+.statValue {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.tableContainer {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+}
+
+.timeOffTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timeOffTable thead {
+  background-color: var(--bg-tertiary);
+}
+
+.timeOffTable th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nameColumn {
+  width: 200px;
+}
+
+.dateColumn {
+  width: 150px;
+}
+
+.typeColumn {
+  width: 200px;
+}
+
+.statusColumn {
+  width: 120px;
+}
+
+.timeOffTable tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-base);
+}
+
+.tableRow:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.timeOffTable td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.nameCell {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.dateCell {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.typeCell {
+  padding: 16px 20px;
+}
+
+.typeTag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.paidtimeoff {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--color-info);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.sicktimeoff {
+  background-color: rgba(249, 115, 22, 0.1);
+  color: var(--color-warning);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.unpaidtimeoff {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.statusCell {
+  padding: 16px 20px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.rejectButton {
+  background-color: var(--color-error);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rejectButton:hover {
+  background-color: var(--color-error-dark);
+  transform: translateY(-1px);
+}
+
+.approveButton {
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.approveButton:hover {
+  background-color: var(--color-success-dark);
+  transform: translateY(-1px);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.approved {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: var(--color-success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.rejected {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.pending {
+  background-color: rgba(249, 115, 22, 0.1);
+  color: var(--color-warning);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .headerSection {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .headerControls {
+    justify-content: space-between;
+  }
+  
+  .searchContainer {
+    flex: 1;
+    max-width: 200px;
+  }
+  
+  .statsSection {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .statCard {
+    max-width: none;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .timeOffTable {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerControls {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .newButton {
+    width: 100%;
+  }
+  
+  .searchContainer {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .rejectButton,
+  .approveButton {
+    width: 100%;
+  }
+}

@@ -314,3 +314,61 @@
     min-width: 180px;
   }
 }
+
+/* Attendance Dropdown Styles */
+.attendanceDropdown {
+  position: relative;
+}
+
+.dropdownIcon {
+  transition: transform var(--transition-base);
+}
+
+.attendanceDropdown:hover .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.attendanceDropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 8px;
+  min-width: 160px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-base);
+  z-index: 1000;
+  backdrop-filter: blur(20px);
+}
+
+.attendanceDropdown:hover .attendanceDropdownMenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownMenuItem {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-base);
+  width: 100%;
+  text-align: left;
+  display: block;
+}
+
+.dropdownMenuItem:hover {
+  color: var(--text-primary);
+  background: rgba(168, 85, 247, 0.1);
+  transform: translateX(4px);
+}

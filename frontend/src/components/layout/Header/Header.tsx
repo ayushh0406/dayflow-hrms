@@ -61,8 +61,42 @@ export const Header: FC<HeaderProps> = ({
         </div>
         
         <nav className={styles.nav}>
-          <button className={`${styles.navItem} ${styles.active}`}>Employees</button>
-          <button className={styles.navItem}>Attendance</button>
+          <button 
+            className={`${styles.navItem} ${window.location.pathname === '/dashboard' ? styles.active : ''}`}
+            onClick={() => window.location.href = '/dashboard'}
+          >
+            Employees
+          </button>
+          <div className={styles.attendanceDropdown}>
+            <button 
+              className={`${styles.navItem} ${window.location.pathname.includes('attendance') ? styles.active : ''}`}
+              onClick={() => {
+                // Default to admin attendance for now - will be handled by dropdown
+                if (!window.location.pathname.includes('attendance')) {
+                  window.location.href = '/admin-attendance';
+                }
+              }}
+            >
+              Attendance
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles.dropdownIcon}>
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div className={styles.attendanceDropdownMenu}>
+              <button 
+                className={styles.dropdownMenuItem}
+                onClick={() => window.location.href = '/admin-attendance'}
+              >
+                Admin View
+              </button>
+              <button 
+                className={styles.dropdownMenuItem}
+                onClick={() => window.location.href = '/employee-attendance'}
+              >
+                Employee View
+              </button>
+            </div>
+          </div>
           <button className={styles.navItem}>Time Off</button>
         </nav>
       </div>
