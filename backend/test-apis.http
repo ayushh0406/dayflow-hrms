@@ -1,0 +1,281 @@
+### Variables
+@baseUrl = http://localhost:5000/api
+@token = 
+@employeeId = 
+
+### Health Check
+GET http://localhost:5000/health
+
+###############################################
+# AUTHENTICATION MODULE
+###############################################
+
+### 1. Sign Up (Create Admin User)
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "employeeId": "EMP001",
+  "email": "admin@dayflow.com",
+  "password": "Admin@123",
+  "firstName": "Admin",
+  "lastName": "User",
+  "role": "ADMIN"
+}
+
+### 2. Sign Up (Create HR User)
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "employeeId": "EMP002",
+  "email": "hr@dayflow.com",
+  "password": "Hr@12345",
+  "firstName": "HR",
+  "lastName": "Manager",
+  "role": "HR"
+}
+
+### 3. Sign Up (Create Employee User)
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "employeeId": "EMP003",
+  "email": "employee@dayflow.com",
+  "password": "Employee@123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "role": "EMPLOYEE"
+}
+
+### 4. Sign In (Admin)
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "admin@dayflow.com",
+  "password": "Admin@123"
+}
+
+### 5. Sign In (HR)
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "hr@dayflow.com",
+  "password": "Hr@12345"
+}
+
+### 6. Sign In (Employee)
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "employee@dayflow.com",
+  "password": "Employee@123"
+}
+
+### 7. Get Current User (use token from sign in)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###############################################
+# EMPLOYEE MODULE
+###############################################
+
+### 8. Get My Profile
+GET {{baseUrl}}/employees/me
+Authorization: Bearer {{token}}
+
+### 9. Update My Profile
+PUT {{baseUrl}}/employees/me
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "phoneNumber": "+1234567890",
+  "address": "123 Main St",
+  "city": "New York",
+  "state": "NY",
+  "zipCode": "10001",
+  "country": "USA"
+}
+
+### 10. Get All Employees (Admin/HR)
+GET {{baseUrl}}/employees
+Authorization: Bearer {{token}}
+
+### 11. Get Employee by ID
+GET {{baseUrl}}/employees/{{employeeId}}
+Authorization: Bearer {{token}}
+
+### 12. Update Employee (Admin/HR)
+PUT {{baseUrl}}/employees/{{employeeId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "designation": "Senior Software Engineer",
+  "department": "Engineering",
+  "phoneNumber": "+1234567890"
+}
+
+### 13. Deactivate Employee (Admin/HR)
+PATCH {{baseUrl}}/employees/{{employeeId}}/deactivate
+Authorization: Bearer {{token}}
+
+### 14. Activate Employee (Admin/HR)
+PATCH {{baseUrl}}/employees/{{employeeId}}/activate
+Authorization: Bearer {{token}}
+
+###############################################
+# ATTENDANCE MODULE
+###############################################
+
+### 15. Check In
+POST {{baseUrl}}/attendance/checkin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "location": "Office",
+  "notes": "On time"
+}
+
+### 16. Check Out
+POST {{baseUrl}}/attendance/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notes": "Regular working hours"
+}
+
+### 17. Mark Attendance (Admin/HR)
+POST {{baseUrl}}/attendance/mark
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "employeeId": "{{employeeId}}",
+  "date": "2026-01-03",
+  "status": "PRESENT",
+  "checkIn": "2026-01-03T09:00:00Z",
+  "checkOut": "2026-01-03T18:00:00Z"
+}
+
+### 18. Get Employee Attendance
+GET {{baseUrl}}/attendance/employee/{{employeeId}}?startDate=2026-01-01&endDate=2026-01-31
+Authorization: Bearer {{token}}
+
+### 19. Get Attendance Summary
+GET {{baseUrl}}/attendance/summary/{{employeeId}}?month=1&year=2026
+Authorization: Bearer {{token}}
+
+###############################################
+# LEAVE MODULE
+###############################################
+
+### 20. Apply Leave
+POST {{baseUrl}}/leaves/apply
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "leaveType": "SICK",
+  "startDate": "2026-01-10",
+  "endDate": "2026-01-11",
+  "reason": "Medical checkup",
+  "halfDay": false
+}
+
+### 21. Get All Leaves
+GET {{baseUrl}}/leaves
+Authorization: Bearer {{token}}
+
+### 22. Get Leave by ID
+GET {{baseUrl}}/leaves/LEAVE_ID_HERE
+Authorization: Bearer {{token}}
+
+### 23. Approve Leave (Admin/HR)
+PATCH {{baseUrl}}/leaves/LEAVE_ID_HERE/approve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "approverComments": "Approved for medical reasons"
+}
+
+### 24. Reject Leave (Admin/HR)
+PATCH {{baseUrl}}/leaves/LEAVE_ID_HERE/reject
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "approverComments": "Please reschedule"
+}
+
+### 25. Cancel Leave
+PATCH {{baseUrl}}/leaves/LEAVE_ID_HERE/cancel
+Authorization: Bearer {{token}}
+
+### 26. Get Leave Balance
+GET {{baseUrl}}/leaves/balance/{{employeeId}}
+Authorization: Bearer {{token}}
+
+###############################################
+# PAYROLL MODULE
+###############################################
+
+### 27. Create Payroll (Admin/HR)
+POST {{baseUrl}}/payroll
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "employeeId": "{{employeeId}}",
+  "basicSalary": 50000,
+  "houseRentAllowance": 15000,
+  "medicalAllowance": 3000,
+  "transportAllowance": 2000,
+  "otherAllowances": 5000,
+  "providentFund": 6000,
+  "taxDeduction": 8000,
+  "otherDeductions": 0,
+  "bankAccountNumber": "1234567890",
+  "bankName": "State Bank",
+  "bankIfscCode": "SBIN0001234",
+  "currency": "INR",
+  "effectiveFrom": "2026-01-01"
+}
+
+### 28. Get Employee Payroll
+GET {{baseUrl}}/payroll/employee/{{employeeId}}
+Authorization: Bearer {{token}}
+
+### 29. Update Payroll (Admin/HR)
+PUT {{baseUrl}}/payroll/PAYROLL_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "basicSalary": 55000,
+  "houseRentAllowance": 16500
+}
+
+### 30. Delete Payroll (Admin/HR)
+DELETE {{baseUrl}}/payroll/PAYROLL_ID_HERE
+Authorization: Bearer {{token}}
+
+###############################################
+# DASHBOARD MODULE
+###############################################
+
+### 31. Get Dashboard (Employee View)
+GET {{baseUrl}}/dashboard
+Authorization: Bearer {{token}}
+
+### 32. Get Dashboard (Admin/HR View)
+GET {{baseUrl}}/dashboard
+Authorization: Bearer {{token}}
